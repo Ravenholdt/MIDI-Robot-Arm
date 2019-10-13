@@ -25,6 +25,7 @@ void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);
   Serial.begin(115200);
   MIDI.setHandleNoteOn(handleNoteOn);
+  MIDI.setHandleControlChange(handleControlChange);
 
   //resetServoPosition();
 }
@@ -49,8 +50,23 @@ void handleNoteOn(byte channel, byte note, byte velocity){
     case 3: // Elbow
       elbow.write(note);
       break;
-    default:
-      base.write(note);
+  }
+}
+
+void handleControlChange(byte channel, byte number, byte value){
+
+  int pos = number + value;
+
+  switch (channel){
+    case 1: // Base
+      base.write(pos);
+      break;
+    case 2: // Shoulder
+      shoulder.write(pos);
+      break;
+    case 3: // Elbow
+      elbow.write(pos);
+      break;
   }
 }
 

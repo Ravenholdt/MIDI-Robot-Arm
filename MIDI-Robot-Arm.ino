@@ -3,13 +3,12 @@
 
 //Declare servos
 Servo base, shoulder, elbow;
-//Declare buffers for their states
-int basep = 15; 
-int shoulderp = 60; 
-int elbowp = 50; 
-int buff = 0;
 
+//Declare buffers for servo states
 //Servo values are valid between 0 - 180
+int basep = 15;     //15 is straight ahead
+int shoulderp = 60; // 60 is straight up, 80 is slightly leaning forward
+int elbowp = 50;    // 50 is straight out, 80 is slightly leaning forward
 
 
 MIDI_CREATE_DEFAULT_INSTANCE();
@@ -27,19 +26,19 @@ void setup() {
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleControlChange(handleControlChange);
 
-  //resetServoPosition();
+  resetServoPosition();
 }
 
 //Set all servos to a base position
 void resetServoPosition() {
-  base.write(basep); //15 is straight ahead
-  shoulder.write(shoulderp); // 60 is straight up, 80 is slightly leaning forward
-  elbow.write(elbowp); // 50 is straight out, 80 is slightly leaning forward
+  base.write(basep);
+  shoulder.write(shoulderp);
+  elbow.write(elbowp);
 }
 
 void handleNoteOn(byte channel, byte note, byte velocity){
 
-  note = note * 1.42;
+  note = note * 1.42;   // Multiply with 1.42 to scale the 0-127 tange to 0-180
   switch (channel){
     case 1: // Base
       base.write(note);
